@@ -1,8 +1,9 @@
 # BIBLIOTECAS
-from scipy.integrate.quadpack import quad
-from quantum_psi import Psi
 import numpy as np
 import plotly.graph_objects as go
+
+from quantum_psi import Psi
+from quantum_psi import graph as pgraph
 
 # CONSTANTES
 A0 = 0.529          # Raio de Bohr
@@ -14,11 +15,10 @@ RMAX = 10
 p1 = Psi(n=2,l=1,ml=0,ms=-1/2)
 p2 = Psi(n=2,l=1,ml=-1,ms=1/2)
 p = np.sqrt(2/3)*p1 - np.sqrt(1/3)*p2
-p = Psi(3,2,1,0)
 print(p)
 
 # DADOS
-x,y,z,value = p.plot_data(RMAX,N_POINTS,A0,xyz=True,epsilon=EPSILON,normalize=True)
+x,y,z,value = pgraph.plot_data(p,RMAX,N_POINTS,A0,xyz=True,epsilon=EPSILON,normalize=True)
 
 # GRÁFICO
 fig = go.Figure(

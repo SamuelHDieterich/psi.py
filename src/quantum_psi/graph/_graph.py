@@ -1,7 +1,12 @@
 # BIBLIOTECAS
 from __future__ import annotations
+
 from typing import Sequence, Tuple, Union
+
 import numpy as np
+
+from .._core import Psi
+
 
 # FUNÇÕES
 def sphere_points(rmax:float,n_points:int) -> Tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
@@ -10,9 +15,9 @@ def sphere_points(rmax:float,n_points:int) -> Tuple[Union[float,Sequence[float]]
 def sph2rec(r:Union[float,Sequence[float]],theta:Union[float,Sequence[float]],phi:Union[float,Sequence[float]]) -> Tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
     return r*np.cos(theta)*np.sin(phi), r*np.sin(theta)*np.sin(phi), r*np.cos(phi)
 
-def gen_data(self,rmax:Union[int,float],npoints:int,a0:float=0.529,xyz:bool=True) -> Tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
+def gen_data(psi:Psi,rmax:Union[int,float],npoints:int,a0:float=0.529,xyz:bool=True) -> Tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
     r,theta,phi = sphere_points(rmax,npoints)
-    value = self.wave_function_prob(a0)(r,theta,phi)
+    value = psi.wave_function_prob(a0)(r,theta,phi)
     if xyz:
         x,y,z = sph2rec(r,theta,phi)
         return x,y,z,value
@@ -25,7 +30,7 @@ def clean_data(value:Union[float,Sequence[float]],epsilon:float=1E-3,normalize:b
     zeros = np.where(value<epsilon)[0]
     return [np.delete(value,zeros)]+[np.delete(i,zeros) for i in coord]
 
-def plot_data(self,rmax:Union[int,float],npoints:int,a0:float=0.529,xyz:bool=True,epsilon:float=1E-3,normalize:bool=True) -> tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
-    *coords,value = gen_data(self,rmax,npoints,a0,xyz)
+def plot_data(psi:Psi,rmax:Union[int,float],npoints:int,a0:float=0.529,xyz:bool=True,epsilon:float=1E-3,normalize:bool=True) -> tuple[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]]:
+    *coords,value = gen_data(psi,rmax,npoints,a0,xyz)
     value,*coords = clean_data(value,epsilon,normalize,*coords)
     return *coords,value

@@ -1,9 +1,12 @@
 # BIBLIOTECAS
 from __future__ import annotations
+
 from typing import Callable, Sequence, Tuple, Union
+
 import numpy as np
 from scipy.integrate import quad
 from scipy.special import factorial, genlaguerre, sph_harm
+
 
 # CLASSE
 class Psi:
@@ -110,5 +113,3 @@ class Psi:
             return self.n[0]**2*a0
         else:
             return self.n**2*a0
-
-    from ._graph import plot_data
