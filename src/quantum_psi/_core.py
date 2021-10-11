@@ -16,7 +16,7 @@ class Psi:
         self.ms = ms
         return None
     
-    def __repr__(self:Psi) -> str:
+    def __repr__(self) -> str:
         str_ket = "{:.3f}·│ n = {}, l = {}, ml = {}, ms = {} ⧽"
         if hasattr(self.const,'__iter__'):
             output = ''
@@ -32,20 +32,20 @@ class Psi:
             output = str_ket.format(self.const,self.n,self.l,self.ml,self.ms)
         return output
 
-    def __mul__(self:Psi,other:Union[int,float]) -> Psi:
+    def __mul__(self,other:Union[int,float]) -> Psi:
         if type(other) is not int and type(other) is not float:
             raise Exception("Argumento inválido! Classe Psi só aceita multiplicação com inteiros ou reais.")
         return Psi(self.n,self.l,self.ml,self.ms,self.const*other)
     
-    def __rmul__(self:Psi,other:Union[int,float]) -> Psi:         
+    def __rmul__(self,other:Union[int,float]) -> Psi:         
         return self.__mul__(other)
     
-    def __truediv__(self:Psi,other:Union[int,float]) -> Psi:
+    def __truediv__(self,other:Union[int,float]) -> Psi:
         if type(other) is not int and type(other) is not float:
             raise Exception("Argumento inválido! Classe Psi só aceita divisão com inteiros ou reais.")
         return Psi(self.n,self.l,self.ml,self.ms,self.const/other)
     
-    def __add__(self:Psi,other:Psi) -> Psi:
+    def __add__(self,other:Psi) -> Psi:
         if type(other) is not Psi:
             raise Exception("Argumento inválido! A soma com Psi só pode ser feita com outro objeto Psi.")
         return Psi(
@@ -56,7 +56,7 @@ class Psi:
             const   = np.array((self.const,other.const)).flatten()
         )
     
-    def __sub__(self:Psi,other:Psi) -> Psi:
+    def __sub__(self,other:Psi) -> Psi:
         if type(other) is not Psi:
             raise Exception("Argumento inválido! A subtração com Psi só pode ser feita com outro objeto Psi.")
         return Psi(
@@ -67,10 +67,10 @@ class Psi:
             const   = np.array((self.const,-other.const)).flatten()
         )
 
-    def normalize(self:Psi) -> Psi:
+    def normalize(self) -> Psi:
         return Psi(self.n,self.l,self.ml,self.ms,self.const/np.sum(self.const**2))
 
-    def R(self:Psi,a0:float=0.529) -> Callable[[Union[float,Sequence[float]]], Union[float,Sequence[float]]]:
+    def R(self,a0:float=0.529) -> Callable[[Union[float,Sequence[float]]], Union[float,Sequence[float]]]:
         
         self = self.normalize() # self = [?]!
 
@@ -82,10 +82,10 @@ class Psi:
         else:
             return _R(self.const,self.n,self.l,a0)
 
-    def P_rad(self:Psi,a0:float=0.529):
+    def P_rad(self,a0:float=0.529):
         return lambda r: r**2*np.abs(self.R(a0)(r))**2
 
-    def wave_function(self:Psi,a0:float=0.529) -> Callable[[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]], Union[complex,Sequence[complex]]]:
+    def wave_function(self,a0:float=0.529) -> Callable[[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]], Union[complex,Sequence[complex]]]:
 
         self = self.normalize() # self = [?]!
 
@@ -97,16 +97,18 @@ class Psi:
         else:
             return _wave_function(self.const,self.n,self.l,self.ml,a0)
 
-    def wave_function_prob(self:Psi,a0:float=0.529) -> Callable[[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]], Union[float,Sequence[float]]]:
+    def wave_function_prob(self,a0:float=0.529) -> Callable[[Union[float,Sequence[float]],Union[float,Sequence[float]],Union[float,Sequence[float]]], Union[float,Sequence[float]]]:
         return lambda r,theta,phi: np.abs(self.wave_function(a0)(r,theta,phi).real)**2
 
-    def mean_r(self:Psi,a0:float=0.529) -> float:
+    def mean_r(self,a0:float=0.529) -> float:
         return quad(lambda r: r*self.P_rad(a0)(r),0,np.inf)[0]
 
-    def r_bohr(self:Psi,a0:float=0.529) -> Union[float,Exception]:
+    def r_bohr(self,a0:float=0.529) -> Union[float,Exception]:
         if hasattr(self.const,'__iter__'):
             if not np.equal(*self.n):
                 raise Exception("Operação inválida! Objeto Psi apresenta valores diferentes para 'n'.")
             return self.n[0]**2*a0
         else:
             return self.n**2*a0
+
+    from ._graph import plot_data

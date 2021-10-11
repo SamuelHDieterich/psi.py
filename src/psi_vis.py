@@ -1,8 +1,6 @@
 # BIBLIOTECAS
-import sys
 from scipy.integrate.quadpack import quad
-from psi.core import Psi
-import psi.graph
+from quantum_psi import Psi
 import numpy as np
 import plotly.graph_objects as go
 
@@ -10,12 +8,13 @@ import plotly.graph_objects as go
 A0 = 0.529          # Raio de Bohr
 N_POINTS = int(1E5) # Número de pontos (cálculo != plot)
 EPSILON = 1E-3
-RMAX = 7
+RMAX = 10
 
 # PSI
 p1 = Psi(n=2,l=1,ml=0,ms=-1/2)
 p2 = Psi(n=2,l=1,ml=-1,ms=1/2)
 p = np.sqrt(2/3)*p1 - np.sqrt(1/3)*p2
+p = Psi(3,2,1,0)
 print(p)
 
 # DADOS
