@@ -1,3 +1,9 @@
+'''
+
+Arquivo de testes com o pacote quantum_psi.
+
+'''
+
 # BIBLIOTECAS
 import numpy as np
 import plotly.graph_objects as go
@@ -18,7 +24,7 @@ p = np.sqrt(2/3)*p1 - np.sqrt(1/3)*p2
 print(p)
 
 # DADOS
-x,y,z,value = pgraph.plot_data(p,RMAX,N_POINTS,A0,xyz=True,epsilon=EPSILON,normalize=True)
+x,y,z,value = pgraph.plot_data(p,RMAX,N_POINTS,A0,xyz=True,epsilon=EPSILON,normalize=True,norm_value=True)
 
 # GRÁFICO
 fig = go.Figure(
