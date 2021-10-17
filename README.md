@@ -16,7 +16,7 @@ Motivated by the work and computational activities of the Quantum Physics Fundam
 
 ## Requirements
 
-- **Python**: >=3.9 (should work in >=3.6, but still need some tests)
+- **Python**: >=3.6.5
 - **Libraries**: NumPy, Scipy, Plotly (optional) 
 
 ## Installation
